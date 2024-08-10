@@ -18,7 +18,7 @@ const userAuth = async (req, res, next) => {
                 next(); // push to next middleware
             }
         }else{
-            return res.status(401).send("Unauthorized, no token");
+            return res.status(401).send("Unauthorized, invalid token");
         }
 
     } catch (error) {
