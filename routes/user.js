@@ -2,7 +2,8 @@ const express = require("express");
 const User = require("../model/index").User;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
-const userAuth = require("../middlewares/userAuth")
+const userAuth = require("../middlewares/userAuth");
+const userRole = require("../middlewares/userRoles");
 
 const router = express.Router();
 
@@ -16,8 +17,11 @@ router.get("/users-test", userAuth, (req, res)=>{
     }
 });
 
-router.get("/users", async (req, res)=>{
+router.get("/users", userAuth, userRole, async (req, res)=>{
     try {
+        // preview role if both middlewares have worked
+        console.log("Role: ", req.role);
+        
         // users
         const users = await User.findAll();
 

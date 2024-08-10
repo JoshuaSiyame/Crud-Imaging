@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken")
 
-// user Roleentication middleware
+// user Role authorization middleware
 const userRole = async (req, res, next) => {
     try {
         // get token from req.cookie
@@ -11,16 +11,19 @@ const userRole = async (req, res, next) => {
             // preview token
             console.log("Token: ", token); // check terminal for the token
 
-            // validate role in token
-            const validToken = jwt.decode(token, )
+            // validate token
+            const validToken = jwt.verify(token, 'your secret hash goes here');
+
+            if(validToken.role == 'admin'){
+                next(); // push to next middleware
+            }
         }else{
-            return res.status(401).send("UnRoleorized, no token");
+            return res.status(401).send("Unauthorized, not admin");
         }
 
-        next(); // push to next middleware
     } catch (error) {
         console.error("Failed to validate user: ", error);
-        return res.status(401).send("UnRoleorized");
+        return res.status(401).send("Unauthorized");
     }
 };
 

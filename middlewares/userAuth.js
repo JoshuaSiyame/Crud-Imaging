@@ -9,7 +9,7 @@ const userAuth = async (req, res, next) => {
         // validate token presence also tunge check expire date hapa ila cja iweka for simplicity
         if (token) {
             // preview token
-            console.log("Token: ", token); // check terminal for the token
+            // console.log("Token: ", token); // check terminal for the token
 
             // validate token
             const validToken = jwt.verify(token, 'your secret hash goes here');
