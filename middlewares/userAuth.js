@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken")
+
 // user authentication middleware
 const userAuth = async (req, res, next) => {
     try {
@@ -8,11 +10,17 @@ const userAuth = async (req, res, next) => {
         if (token) {
             // preview token
             console.log("Token: ", token); // check terminal for the token
+
+            // validate token
+            const validToken = jwt.verify(token, 'your secret hash goes here');
+
+            if(validToken){
+                next(); // push to next middleware
+            }
         }else{
             return res.status(401).send("Unauthorized, no token");
         }
 
-        next(); // push to next middleware
     } catch (error) {
         console.error("Failed to validate user: ", error);
         return res.status(401).send("Unauthorized");
