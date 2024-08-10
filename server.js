@@ -1,6 +1,7 @@
 // import modules
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const http = require("http");
 const logger = require("morgan");
 const dotenv = require("dotenv");
@@ -18,6 +19,7 @@ const app = express();
 // app configuration
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser())
 app.use(logger('dev'));
 
 // configure routes

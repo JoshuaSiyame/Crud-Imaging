@@ -2,11 +2,12 @@ const express = require("express");
 const User = require("../model/index").User;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
+const userAuth = require("../middlewares/userAuth")
 
 const router = express.Router();
 
 // endpoints
-router.get("/users-test", (req, res)=>{
+router.get("/users-test", userAuth, (req, res)=>{
     try {
         res.status(200).send("Working");
     } catch (error) {
@@ -30,7 +31,7 @@ router.get("/users", async (req, res)=>{
     }
 });
 
-router.post("/user", async (req, res)=>{
+router.post("/user", userAuth, async (req, res)=>{
     try {
         // get requested user by email
         const { email } = req.body;
@@ -73,7 +74,7 @@ router.post("/new-user", async (req, res)=>{
         console.log("New user: ", newUser);
 
         // save new user
-        const savedUser = (await User.create(newUser)).save();
+        const savedUser = await User.create(newUser).save();
 
         if(savedUser){
             res.status(200).send("New user created")
@@ -106,6 +107,16 @@ router.post("/user-login", async (req, res)=>{
             // store token in cookie
             res.cookie('token', token).send("Logged in");
         }
+    } catch (error) {
+        console.error("Failed to login requested user: ", error);
+        return res.status(400).send("Failed to login")
+    }
+});
+
+router.post("/user-logout", userAuth, async (req, res)=>{
+    try {
+        // clear token in cookie
+        res.cookie('token', '').send("Logged out");
     } catch (error) {
         console.error("Failed to login requested user: ", error);
         return res.status(400).send("Failed to login")
