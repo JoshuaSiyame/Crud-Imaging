@@ -4,22 +4,9 @@ const bodyParser = require("body-parser");
 const http = require("http");
 const logger = require("morgan");
 const dotenv = require("dotenv");
-const { Sequelize } = require("sequelize");
 
 // environment variable configuration
 dotenv.config();
-
-// connection to database
-const sequelize = new Sequelize({
-    dialect: process.env.DIALECT,
-    storage: 'images.sqlite'
-});
-
-sequelize.authenticate().then(() => {
-    console.log("Connected to database");
-}).catch((error) => {
-    console.error("Failed to connect to database: ", error);
-});
 
 // import routes
 const routes = require("./routes/index");

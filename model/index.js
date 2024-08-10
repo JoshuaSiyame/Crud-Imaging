@@ -4,7 +4,7 @@ const { DataTypes, Sequelize } = require('sequelize');
 // connection to database
 const sequelize = new Sequelize({
     dialect: process.env.DIALECT,
-    storage: 'images.sqlite'
+    storage: 'database.sqlite'
 });
 
 sequelize.authenticate().then(() => {
@@ -12,6 +12,32 @@ sequelize.authenticate().then(() => {
 }).catch((error) => {
     console.error("Failed to connect to database: ", error);
 });
+
+// user model/schema
+const User = sequelize.define('user', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    first_name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    last_name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+});
+
 
 // image model/schema
 const Image = sequelize.define("image", {
@@ -34,7 +60,8 @@ const Image = sequelize.define("image", {
     }
 });
 
-// sync model
-Image.sync()
+// sync models
+User.sync();
+Image.sync();
 
 module.exports = Image;
