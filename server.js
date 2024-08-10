@@ -10,6 +10,7 @@ dotenv.config();
 
 // import routes
 const routes = require("./routes/index");
+const users = require("./routes/user");
 
 // app instance
 const app = express();
@@ -21,6 +22,7 @@ app.use(logger('dev'));
 
 // configure routes
 app.use("/", routes);
+app.use("/", users);
 
 // server instance
 const server = http.createServer(app);

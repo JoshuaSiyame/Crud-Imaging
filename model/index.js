@@ -35,6 +35,10 @@ const User = sequelize.define('user', {
     password: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    role: {
+        type: DataTypes.ENUM('admin', 'client'),
+        defaultValue: 'client'
     }
 });
 
@@ -64,4 +68,4 @@ const Image = sequelize.define("image", {
 User.sync();
 Image.sync();
 
-module.exports = Image;
+module.exports = { Image, User };
